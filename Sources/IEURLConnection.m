@@ -40,7 +40,7 @@
     if (![NSURLConnection canHandleRequest:request]) return nil;
     
     if ((self = [super init])) {
-        self.urlConnection = [NSURLConnection connectionWithRequest:request delegate:self];
+        self.urlConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:startImmediately] autorelease];
     }
     return self;
 }
