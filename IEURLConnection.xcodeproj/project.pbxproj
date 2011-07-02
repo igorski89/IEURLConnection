@@ -14,6 +14,7 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		A97558D213BF8A9E00413418 /* IEURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A97558D113BF8A9E00413418 /* IEURLConnection.m */; };
+		A975597413BF9ECA00413418 /* UIAlertView+ShowMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A975597313BF9ECA00413418 /* UIAlertView+ShowMessage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A97558D013BF8A9E00413418 /* IEURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEURLConnection.h; sourceTree = "<group>"; };
 		A97558D113BF8A9E00413418 /* IEURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IEURLConnection.m; sourceTree = "<group>"; };
+		A975597213BF9ECA00413418 /* UIAlertView+ShowMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+ShowMessage.h"; sourceTree = "<group>"; };
+		A975597313BF9ECA00413418 /* UIAlertView+ShowMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+ShowMessage.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +51,8 @@
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A975597213BF9ECA00413418 /* UIAlertView+ShowMessage.h */,
+				A975597313BF9ECA00413418 /* UIAlertView+ShowMessage.m */,
 				A97558D013BF8A9E00413418 /* IEURLConnection.h */,
 				A97558D113BF8A9E00413418 /* IEURLConnection.m */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
@@ -167,6 +172,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				A97558D213BF8A9E00413418 /* IEURLConnection.m in Sources */,
+				A975597413BF9ECA00413418 /* UIAlertView+ShowMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

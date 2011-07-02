@@ -45,11 +45,7 @@
     NSURL *imageURL = [NSURL URLWithString:@"http://icanhascheezburger.files.wordpress.com/2011/06/funny-pictures-nyan-cat-wannabe1.jpg"];
     IEURLConnection *connection = [IEURLConnection connectionWithRequest:[NSURLRequest requestWithURL:imageURL]];
     connection.didFailWithErrorBlock = ^(NSError *error) {
-        [[[[UIAlertView alloc] initWithTitle:@"Download error"
-                                     message:[error localizedDescription] 
-                                    delegate:nil 
-                           cancelButtonTitle:@"OK" 
-                           otherButtonTitles:nil] autorelease] show];
+        [UIAlertView showAlertWithTitle:@"Download error" message:[error localizedDescription]];
         
         self.downloadButton.enabled = YES;
         self.progressView.progress = 0.0f;
