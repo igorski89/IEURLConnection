@@ -24,8 +24,13 @@ typedef void (^IEDidFinishLoadingHandler) (NSURLResponse *response, NSData *resp
 
 typedef void (^IEConnectionProgressBlock) (float progress);
 
-@interface IEURLConnection : NSObject {
+@interface IEURLConnection : NSURLConnection {
 }
+
+@property (nonatomic, assign) id delegate;
+
+@property (nonatomic, retain) NSMutableData *responseData;
+@property (nonatomic, retain) NSURLResponse *response;
 
 @property (nonatomic, copy) IECanAuthenticateAgainstProtectionSpaceHandler canAuthenticateAgainstProtectionSpaceHandler;
 @property (nonatomic, copy) IEDidCancelAuthenticationChallengeHandler didCancelAuthenticationChallengeHandler;
@@ -48,8 +53,6 @@ typedef void (^IEConnectionProgressBlock) (float progress);
 - (id)initWithRequest:(NSURLRequest *)request;
 - (id)initWithRequest:(NSURLRequest *)request startImmediately:(BOOL)startImmediately;
 + (id)connectionWithRequest:(NSURLRequest *)request;
-
-- (void)start;
-- (void)cancel;
++ (id)connectionWithRequest:(NSURLRequest *)request delegate:(id)delegate;
 
 @end

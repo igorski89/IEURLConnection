@@ -1,5 +1,5 @@
 //
-//  IEURLConnectionAppDelegate.h
+//  AppDelegate.h
 //  IEURLConnection
 //
 //  Created by Igor Evsukov on 02.07.11.
