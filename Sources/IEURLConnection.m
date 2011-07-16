@@ -20,10 +20,10 @@
 
 @synthesize urlConnection, responceData, urlResponce;
 
-@synthesize canAuthenticateAgainstProtectionSpaceBlock, didCancelAuthenticationChallengeBlock, didReceiveAuthenticationChallengeBlock, shouldUseCredentialStorageBlock;
-@synthesize willCacheResponseBlock, didReceiveResponseBlock, didReceiveDataBlock, sendBodyDataBlock, willSendRequestRedirectResponseBlock;
-@synthesize didFailWithErrorBlock, didFinishLoadingBlock;
-@synthesize uploadProgressBlock, downloadProgressBlock;
+@synthesize canAuthenticateAgainstProtectionSpaceHandler, didCancelAuthenticationChallengeHandler, didReceiveAuthenticationChallengeHandler, shouldUseCredentialStorageHandler;
+@synthesize willCacheResponseHandler, didReceiveResponseHandler, didReceiveDataHandler, sendBodyDataHandler, willSendRequestRedirectResponseHandler;
+@synthesize didFailWithErrorHandler, didFinishLoadingHandler;
+@synthesize uploadProgressHandler, downloadProgressHandler;
 
 #pragma mark -
 #pragma mark init && dealloc
@@ -44,7 +44,7 @@
     }
     return self;
 }
-+ (IEURLConnection*)connectionWithRequest:(NSURLRequest *)request {
++ (id)connectionWithRequest:(NSURLRequest *)request {
     return [[[self alloc] initWithRequest:request] autorelease];
 }
 
@@ -53,22 +53,22 @@
     self.urlConnection = nil;
     self.urlResponce = nil;
     
-    self.canAuthenticateAgainstProtectionSpaceBlock = nil;
-    self.didCancelAuthenticationChallengeBlock = nil;
-    self.didReceiveAuthenticationChallengeBlock = nil;
-    self.shouldUseCredentialStorageBlock = nil;
+    self.canAuthenticateAgainstProtectionSpaceHandler = nil;
+    self.didCancelAuthenticationChallengeHandler = nil;
+    self.didReceiveAuthenticationChallengeHandler = nil;
+    self.shouldUseCredentialStorageHandler = nil;
     
-    self.willCacheResponseBlock = nil;
-    self.didReceiveResponseBlock = nil;
-    self.didReceiveDataBlock = nil;
-    self.sendBodyDataBlock = nil;
-    self.willSendRequestRedirectResponseBlock = nil;
+    self.willCacheResponseHandler = nil;
+    self.didReceiveResponseHandler = nil;
+    self.didReceiveDataHandler = nil;
+    self.sendBodyDataHandler = nil;
+    self.willSendRequestRedirectResponseHandler = nil;
     
-    self.didFailWithErrorBlock = nil;
-    self.didFinishLoadingBlock = nil;
+    self.didFailWithErrorHandler = nil;
+    self.didFinishLoadingHandler = nil;
     
-    self.uploadProgressBlock = nil;
-    self.downloadProgressBlock = nil;
+    self.uploadProgressHandler = nil;
+    self.downloadProgressHandler = nil;
     
     [super dealloc];
 }
@@ -94,8 +94,8 @@
 #pragma mark Connection Authentication
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     if (connection == self.urlConnection) {
-        if (self.canAuthenticateAgainstProtectionSpaceBlock != nil) {
-            return self.canAuthenticateAgainstProtectionSpaceBlock(protectionSpace);
+        if (self.canAuthenticateAgainstProtectionSpaceHandler != nil) {
+            return self.canAuthenticateAgainstProtectionSpaceHandler(protectionSpace);
         }
     }
     return NO;
@@ -103,24 +103,24 @@
 
 - (void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if (connection == self.urlConnection) {
-        if (self.didCancelAuthenticationChallengeBlock != nil) {
-            self.didCancelAuthenticationChallengeBlock(challenge);
+        if (self.didCancelAuthenticationChallengeHandler != nil) {
+            self.didCancelAuthenticationChallengeHandler(challenge);
         }
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if (connection == self.urlConnection) {
-        if (self.didReceiveAuthenticationChallengeBlock != nil) {
-            self.didReceiveAuthenticationChallengeBlock(challenge);
+        if (self.didReceiveAuthenticationChallengeHandler != nil) {
+            self.didReceiveAuthenticationChallengeHandler(challenge);
         }
     }
 }
 
 - (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection {
     if (connection == self.urlConnection) {
-        if (self.shouldUseCredentialStorageBlock != nil) {
-            return self.shouldUseCredentialStorageBlock();
+        if (self.shouldUseCredentialStorageHandler != nil) {
+            return self.shouldUseCredentialStorageHandler();
         }
     }
     return NO;   
@@ -130,8 +130,8 @@
 #pragma mark Connection Data and Responses
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
     if (connection == self.urlConnection) {
-        if (self.willCacheResponseBlock != nil) {
-            return self.willCacheResponseBlock(cachedResponse);
+        if (self.willCacheResponseHandler != nil) {
+            return self.willCacheResponseHandler(cachedResponse);
         }
     }
     return cachedResponse;
@@ -147,8 +147,8 @@
         }
          
         self.urlResponce = response;
-        if (self.didReceiveResponseBlock != nil) {
-            self.didReceiveResponseBlock(response);
+        if (self.didReceiveResponseHandler != nil) {
+            self.didReceiveResponseHandler(response);
         }
     }
 }
@@ -161,32 +161,32 @@
         
         [self.responceData appendData:data];
         
-        if (self.didReceiveDataBlock != nil) {
-            self.didReceiveDataBlock(data);
+        if (self.didReceiveDataHandler != nil) {
+            self.didReceiveDataHandler(data);
         }
         
-        if (self.downloadProgressBlock != nil && self.urlResponce != nil && [self.urlResponce expectedContentLength] != NSURLResponseUnknownLength) {
-            self.downloadProgressBlock((double)[self.responceData length]/(double)[self.urlResponce expectedContentLength]);
+        if (self.downloadProgressHandler != nil && self.urlResponce != nil && [self.urlResponce expectedContentLength] != NSURLResponseUnknownLength) {
+            self.downloadProgressHandler((double)[self.responceData length]/(double)[self.urlResponce expectedContentLength]);
         }
     }    
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     if (connection == self.urlConnection) {
-        if (self.sendBodyDataBlock != nil) {
-            self.sendBodyDataBlock(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+        if (self.sendBodyDataHandler != nil) {
+            self.sendBodyDataHandler(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
         }
         
-        if (self.uploadProgressBlock != nil) {
-            self.uploadProgressBlock((float)totalBytesWritten/(float)totalBytesExpectedToWrite);
+        if (self.uploadProgressHandler != nil) {
+            self.uploadProgressHandler((float)totalBytesWritten/(float)totalBytesExpectedToWrite);
         }
     }
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
     if (connection == self.urlConnection) {
-        if (self.willSendRequestRedirectResponseBlock != nil) {
-            self.willSendRequestRedirectResponseBlock(request, redirectResponse);
+        if (self.willSendRequestRedirectResponseHandler != nil) {
+            self.willSendRequestRedirectResponseHandler(request, redirectResponse);
         }
     }
     return request;
@@ -196,8 +196,8 @@
 #pragma mark Connection Completion
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     if (connection == self.urlConnection) {
-        if (self.didFailWithErrorBlock != nil) {
-            self.didFailWithErrorBlock(error);
+        if (self.didFailWithErrorHandler != nil) {
+            self.didFailWithErrorHandler(error);
         }
         
         [self release];
@@ -206,8 +206,8 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     if (connection == self.urlConnection) {
-        if (self.didFinishLoadingBlock != nil) {
-            self.didFinishLoadingBlock(self.urlResponce, self.responceData);
+        if (self.didFinishLoadingHandler != nil) {
+            self.didFinishLoadingHandler(self.urlResponce, self.responceData);
         }
         
         [self release];
