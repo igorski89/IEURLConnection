@@ -8,20 +8,43 @@
 
 #import "IEURLConnection.h"
 
-#pragma mark - private declarations
-@interface IEURLConnection()
+#pragma mark - private class – delegate proxy
+@interface IEURLConnectionDelegateProxy : NSObject {
+    
+}
+
++ (id)shared;
+
+- (BOOL)connection:(IEURLConnection*)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace;
+- (void)connection:(IEURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+- (BOOL)connectionShouldUseCredentialStorage:(IEURLConnection *)connection;
+- (NSCachedURLResponse *)connection:(IEURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
+
+- (NSCachedURLResponse *)connection:(IEURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
+- (void)connection:(IEURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
+- (void)connection:(IEURLConnection *)connection didReceiveData:(NSData *)data;
+- (void)connection:(IEURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite;
+- (NSURLRequest *)connection:(IEURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse;
+
+- (void)connection:(IEURLConnection *)connection didFailWithError:(NSError *)error;
+- (void)connectionDidFinishLoading:(IEURLConnection *)connection;
 
 @end
 
-#pragma mark - implementation
-@implementation IEURLConnection
+@implementation IEURLConnectionDelegateProxy
 
-#pragma mark -
-#pragma mark delegation
++ (id)shared {
+    static IEURLConnectionDelegateProxy *proxyDelegate = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        proxyDelegate = [[IEURLConnectionDelegateProxy alloc] init];
+    });
+    
+    return proxyDelegate;
+}
 
-#pragma mark 
 #pragma mark Connection Authentication
-+ (BOOL)connection:(IEURLConnection*)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
+- (BOOL)connection:(IEURLConnection*)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:canAuthenticateAgainstProtectionSpace:)]) {
         return [connection.delegate connection:connection canAuthenticateAgainstProtectionSpace:protectionSpace];
     }
@@ -31,7 +54,7 @@
     return NO;
 }
 
-+ (void)connection:(IEURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+- (void)connection:(IEURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:didCancelAuthenticationChallenge:)]) {
         [connection.delegate connection:connection didCancelAuthenticationChallenge:challenge];
     }
@@ -40,7 +63,7 @@
     }
 }
 
-+ (void)connection:(IEURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+- (void)connection:(IEURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:didReceiveAuthenticationChallenge:)]) {
         [connection.delegate connection:connection didReceiveAuthenticationChallenge:challenge];
     }
@@ -49,7 +72,7 @@
     }
 }
 
-+ (BOOL)connectionShouldUseCredentialStorage:(IEURLConnection *)connection {
+- (BOOL)connectionShouldUseCredentialStorage:(IEURLConnection *)connection {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connectionShouldUseCredentialStorage:)]) {
         return [connection.delegate connectionShouldUseCredentialStorage:connection];
     }
@@ -59,9 +82,8 @@
     return NO;   
 }
 
-#pragma mark 
 #pragma mark Connection Data and Responses
-+ (NSCachedURLResponse *)connection:(IEURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
+- (NSCachedURLResponse *)connection:(IEURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:willCacheResponse:)]) {
         return [connection.delegate connection:connection willCacheResponse:cachedResponse];
     }
@@ -71,7 +93,7 @@
     return cachedResponse;
 }
 
-+ (void)connection:(IEURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+- (void)connection:(IEURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:didReceiveResponse:)]) {
         [connection.delegate connection:connection didReceiveResponse:response];
     }
@@ -88,7 +110,7 @@
     }
 }
 
-+ (void)connection:(IEURLConnection *)connection didReceiveData:(NSData *)data {
+- (void)connection:(IEURLConnection *)connection didReceiveData:(NSData *)data {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:didReceiveData:)]) {
         [connection.delegate connection:connection didReceiveData:data];
     }
@@ -108,7 +130,7 @@
     
 }
 
-+ (void)connection:(IEURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+- (void)connection:(IEURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:)]) {
         [connection.delegate connection:connection didSendBodyData:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
     }
@@ -122,7 +144,7 @@
     }
 }
 
-+ (NSURLRequest *)connection:(IEURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
+- (NSURLRequest *)connection:(IEURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:willSendRequest:redirectResponse:)]) {
         return [connection.delegate connection:connection willSendRequest:request redirectResponse:redirectResponse];
     }
@@ -132,9 +154,8 @@
     return request;
 }
 
-#pragma mark 
 #pragma mark Connection Completion
-+ (void)connection:(IEURLConnection *)connection didFailWithError:(NSError *)error {
+- (void)connection:(IEURLConnection *)connection didFailWithError:(NSError *)error {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connection:didFailWithError:)]) {
         [connection.delegate connection:connection didFailWithError:error];
     }
@@ -144,7 +165,7 @@
     }
 }
 
-+ (void)connectionDidFinishLoading:(IEURLConnection *)connection {
+- (void)connectionDidFinishLoading:(IEURLConnection *)connection {
     if (connection.delegate != nil && [connection.delegate respondsToSelector:@selector(connectionDidFinishLoading:)]) {
         [connection.delegate connectionDidFinishLoading:connection];
     }
@@ -154,6 +175,13 @@
     }
 }
 
+@end
+
+#pragma mark - implementation
+@implementation IEURLConnection
+
+#pragma mark -
+#pragma mark delegation
 
 #pragma mark - properties
 @synthesize delegate;
@@ -174,7 +202,7 @@
     return [self initWithRequest:request delegate:aDelegate startImmediately:NO];
 }
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id)aDelegate startImmediately:(BOOL)startImmediately {
-    if ((self = [super initWithRequest:request delegate:[self class] startImmediately:startImmediately])) {
+    if ((self = [super initWithRequest:request delegate:[IEURLConnectionDelegateProxy shared] startImmediately:startImmediately])) {
         if (aDelegate != nil && aDelegate != [self class]) {
             self.delegate = aDelegate;
         }        
