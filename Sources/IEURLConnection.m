@@ -10,15 +10,14 @@
 
 #pragma mark - private class – delegate proxy
 @interface IEURLConnectionDelegateProxy : NSObject {
-    
 }
 
 + (id)shared;
 
-- (BOOL)connection:(IEURLConnection*)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace;
+- (BOOL)connection:(IEURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace;
 - (void)connection:(IEURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+- (void)connection:(IEURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 - (BOOL)connectionShouldUseCredentialStorage:(IEURLConnection *)connection;
-- (NSCachedURLResponse *)connection:(IEURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
 
 - (NSCachedURLResponse *)connection:(IEURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
 - (void)connection:(IEURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
