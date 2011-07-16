@@ -1,1 +1,1 @@
-see more in my blog post [http://evsukov.posterous.com/blocks-wrapper-around-nsurlconnection](http://evsukov.posterous.com/blocks-wrapper-around-nsurlconnection)
+see more in my blog post [http://evsukov.posterous.com/ieurlconnection-nsurlconnection-subclass-with](http://evsukov.posterous.com/ieurlconnection-nsurlconnection-subclass-with)

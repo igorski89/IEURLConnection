@@ -148,7 +148,7 @@
         return [connection.delegate connection:connection willSendRequest:request redirectResponse:redirectResponse];
     }
     if (connection.willSendRequestRedirectResponseHandler != nil) {
-        connection.willSendRequestRedirectResponseHandler(request, redirectResponse);
+        return connection.willSendRequestRedirectResponseHandler(request, redirectResponse);
     }
     return request;
 }
@@ -178,9 +178,6 @@
 
 #pragma mark - implementation
 @implementation IEURLConnection
-
-#pragma mark -
-#pragma mark delegation
 
 #pragma mark - properties
 @synthesize delegate;
