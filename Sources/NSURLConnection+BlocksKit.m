@@ -245,8 +245,7 @@ static char* kDownloadProgressHandlerKey = "downloadProgressHandler";
     return [self initWithRequest:request delegate:aDelegate startImmediately:NO];
 }
 - (id)bk_initWithRequest:(NSURLRequest *)request delegate:(id)aDelegate startImmediately:(BOOL)startImmediately {
-    self = [self bk_initWithRequest:request delegate:[BKURLConnectionDelegateProxy shared] startImmediately:startImmediately];
-    if (self) {
+    if ([self bk_initWithRequest:request delegate:[BKURLConnectionDelegateProxy shared] startImmediately:startImmediately]) {
         if (aDelegate != nil && aDelegate != [self class]) {
             self.delegate = aDelegate;
         }          
@@ -255,7 +254,7 @@ static char* kDownloadProgressHandlerKey = "downloadProgressHandler";
 }
 
 + (NSURLConnection*)connectionWithRequest:(NSURLRequest *)request delegate:(id)delegate {
-    return [[[self alloc] initWithRequest:request delegate:delegate startImmediately:NO] autorelease];
+    return [[self alloc] initWithRequest:request delegate:delegate startImmediately:NO];
 }
 
 #pragma mark new
@@ -267,7 +266,7 @@ static char* kDownloadProgressHandlerKey = "downloadProgressHandler";
     return [self initWithRequest:request delegate:nil startImmediately:startImmediately];
 }
 + (NSURLConnection*)connectionWithRequest:(NSURLRequest *)request {
-    return [[[self alloc] initWithRequest:request delegate:nil startImmediately:NO] autorelease];
+    return [[self alloc] initWithRequest:request delegate:nil startImmediately:NO];
 }
 
 #if BK_SHOULD_DEALLOC

@@ -12,11 +12,11 @@
 @implementation UIAlertView(ShowMessage)
 
 + (void)showAlertWithTitle:(NSString*)title message:(NSString*)message {
-    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:title
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                          message:message
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil] autorelease];
+                                               otherButtonTitles:nil];
     [alertView show];
 }
 

@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-//#import "IEURLConnection.h"
 #import "NSURLConnection+BlocksKit.h"
 
 @implementation AppDelegate
@@ -24,14 +23,6 @@
     return YES;
 }
 
-- (void)dealloc {
-    self.window = nil;
-    self.imageView = nil;
-    self.progressView = nil;
-    self.downloadButton = nil;
-    
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark actions handling
