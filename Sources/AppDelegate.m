@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "IEURLConnection.h"
+//#import "IEURLConnection.h"
+#import "NSURLConnection+BlocksKit.h"
 
 @implementation AppDelegate
 
@@ -43,8 +44,7 @@
     //NSURL *imageURL = [NSURL URLWithString:@"http://freelargephotos.com/000597_l.jpg"];
     //NSURL *imageURL = [NSURL URLWithString:@"http://www.livejournal.ru/static/files/themes/20017_maru.jpg"];
     NSURL *imageURL = [NSURL URLWithString:@"http://icanhascheezburger.files.wordpress.com/2011/06/funny-pictures-nyan-cat-wannabe1.jpg"];
-//    IEURLConnection *connection = [IEURLConnection connectionWithRequest:[NSURLRequest requestWithURL:imageURL]];
-    IEURLConnection *connection = [IEURLConnection connectionWithRequest:[NSURLRequest requestWithURL:imageURL] delegate:self];
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:imageURL] delegate:self];
     connection.didFailWithErrorHandler = ^(NSError *error) {
         [UIAlertView showAlertWithTitle:@"Download error" message:[error localizedDescription]];
         
@@ -62,11 +62,11 @@
     [connection start];
 }
 
-- (void)connection:(IEURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     NSLog(@"%s",__PRETTY_FUNCTION__);
 }
 
-- (void)connection:(IEURLConnection *)connection didReceiveData:(NSData *)data {
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     NSLog(@"%s",__PRETTY_FUNCTION__);
 }
 
